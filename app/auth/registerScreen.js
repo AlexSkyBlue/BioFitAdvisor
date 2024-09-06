@@ -2,12 +2,9 @@ import React from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Link } from "expo-router";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "nativewind";
 import Input from "../../components/(common)/Input";

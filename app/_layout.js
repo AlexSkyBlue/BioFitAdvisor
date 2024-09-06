@@ -2,8 +2,8 @@
 import { Stack } from "expo-router";
 import { View } from "react-native";
 import { Logo } from "../components/(common)/Logo";
-import { CircleInfoIcon, UserIcon } from "../components/(common)/Icons";
-import { Link, Slot } from "expo-router";
+import { UserIcon } from "../components/(common)/Icons";
+import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
 export default function RootLayout() {
@@ -18,12 +18,7 @@ export default function RootLayout() {
           headerLeft: () => <Logo />,
           headerRight: () => (
             <View className="flex-row justify-center items-center gap-x-2">
-              <Link asChild href="/about">
-                <Pressable>
-                  <CircleInfoIcon />
-                </Pressable>
-              </Link>
-              <Link asChild href="/auth/loginScreen">
+              <Link asChild href="/profile">
                 <Pressable>
                   <UserIcon />
                 </Pressable>
@@ -33,6 +28,9 @@ export default function RootLayout() {
         }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="loginScreen" options={{ headerShown: false }} />
+
       </Stack>
     </View>
   );

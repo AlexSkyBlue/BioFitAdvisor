@@ -2,7 +2,13 @@ import { View, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 export const Logo = (props) => (
-  <View>
+  <View className="px-2.5 mt-1 border-b border-[#E879F9] min-w-max" style={{
+    shadowColor: '#d579ff',   // Color de la sombra (neón)
+    shadowOffset: { width: 0, height: 0 }, // Sin desplazamiento
+    shadowOpacity: 1,         // Opacidad completa para un brillo fuerte
+    shadowRadius: 15,         // Mayor difuminado para el efecto neón
+    elevation: 20,            // Para Android
+  }}>
     <Text className="text-left text-white text-2xl font-bold">
       BioFit Advisor
     </Text>

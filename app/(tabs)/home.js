@@ -1,125 +1,87 @@
-import React from "react";
-import { View, Text, Dimensions, FlatList } from "react-native";
-import { LineChart, BarChart, PieChart } from "react-native-chart-kit";
+import React from 'react';
+import { View, Text, FlatList, Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function Home() {
+export default function Dashboard() {
   const screenWidth = Dimensions.get("window").width;
 
-  // Configuración de datos para los gráficos
-  const chartData = [
-    {
-      id: "lineChart",
-      title: "Gráfico de Líneas",
-      type: "line",
-      data: {
-        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"],
-        datasets: [{ data: [20, 45, 28, 80, 99, 43] }],
-      },
-    },
-    {
-      id: "barChart",
-      title: "Gráfico de Barras",
-      type: "bar",
-      data: {
-        labels: ["Producto A", "Producto B", "Producto C", "Producto D"],
-        datasets: [{ data: [40, 60, 80, 100] }],
-      },
-    },
-    {
-      id: "pieChart",
-      title: "Gráfico Circular",
-      type: "pie",
-      data: [
-        {
-          name: "Producto A",
-          population: 40,
-          color: "rgba(232, 121, 249, 1)",
-          legendFontColor: "#E879F9",
-          legendFontSize: 15,
-        },
-        {
-          name: "Producto B",
-          population: 60,
-          color: "rgba(232, 121, 249, 0.8)",
-          legendFontColor: "#E879F9",
-          legendFontSize: 15,
-        },
-        {
-          name: "Producto C",
-          population: 80,
-          color: "rgba(232, 121, 249, 0.6)",
-          legendFontColor: "#E879F9",
-          legendFontSize: 15,
-        },
-      ],
-    },
+  // Datos de las tarjetas
+  const cardsData = [
+    { id: '1', title: '10 Exercises', subtitle: '1 hour 50 minutes', value: '5/10' },
+    { id: '2', title: '6 Meals', subtitle: '1604.0 cal', value: '4/6' },
+    { id: '3', title: 'Sleep', subtitle: '8 hours', value: 'Zzz' },
   ];
 
-  const chartConfig = {
-    backgroundColor: "#000000", // Fondo negro para los gráficos
-    backgroundGradientFrom: "#000000",
-    backgroundGradientTo: "#000000",
-    decimalPlaces: 2,
-    color: (opacity = 1) => `rgba(232, 121, 249, ${opacity})`, // Color morado para los gráficos
-    style: {
-      borderRadius: 16,
-    },
-    labelColor: (opacity = 1) => `rgba(232, 121, 249, ${opacity})`, // Color de las etiquetas
+  const chartData = {
+    labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"],
+    datasets: [
+      { data: [20, 45, 28, 80, 99, 43], strokeWidth: 2, color: (opacity = 1) => `rgba(97, 5, 136, ${opacity})` }
+    ]
   };
 
-  const renderChart = ({ item }) => {
-    return (
-      <View className="flex-1 items-center p-5">
-        <Text className="text-lg font-bold mb-2 text-white">{item.title}</Text>
-        {item.type === "line" && (
-          <LineChart
-            data={item.data}
-            width={screenWidth - 40}
-            height={220}
-            chartConfig={chartConfig}
-            bezier
-            style={{ marginVertical: 8, borderRadius: 16 }}
-          />
-        )}
-        {item.type === "bar" && (
-          <BarChart
-            data={item.data}
-            width={screenWidth - 40}
-            height={220}
-            chartConfig={chartConfig}
-            verticalLabelRotation={30}
-            style={{ marginVertical: 8, borderRadius: 16 }}
-          />
-        )}
-        {item.type === "pie" && (
-          <PieChart
-            data={item.data}
-            width={screenWidth - 40}
-            height={220}
-            chartConfig={chartConfig}
-            accessor={"population"}
-            backgroundColor={"#000000"} // Fondo negro para el gráfico circular
-            paddingLeft={"15"}
-            absolute
-            style={{ marginVertical: 8, borderRadius: 16 }}
-          />
-        )}
-      </View>
-    );
+  const chartConfig = {
+    backgroundColor: "#1d1f2e",
+    backgroundGradientFrom: "#1d1f2e",
+    backgroundGradientTo: "#1d1f2e",
+    decimalPlaces: 2,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    style: { borderRadius: 16 }
   };
+
+  // Render de las tarjetas con efecto gradiente
+  const renderCard = ({ item }) => (
+    <LinearGradient
+      colors={['#610588', '#E879F9', '#ff85f3']} // Gradiente de color más extendido
+      start={[0.2, 0]} // Empieza el gradiente desde la esquina superior izquierda
+      end={[1, 2]} // Termina el gradiente en la parte inferior
+      style={{
+        borderRadius: 20,              // Bordes redondeados más suaves
+        paddingHorizontal: 10,                   // Espaciado interior
+        marginRight: 15,               // Espaciado entre tarjetas
+        width: screenWidth * 0.35,     // Ancho ajustado al 35% del ancho de la pantalla
+        height: 80,                   // Altura fija para todas las tarjetas
+        justifyContent: 'center',      // Centrar contenido
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        elevation: 10,
+      }}
+    >
+      <Text className="text-white font-bold text-base">{item.title}</Text>
+      <Text className="text-gray-300 text-sm">{item.subtitle}</Text>
+      <Text className="text-white text-sm font-bold">{item.value}</Text>
+    </LinearGradient>
+  );
 
   return (
-    <View className="flex-1 bg-black">
-      {/* Título del Dashboard */}
-      <Text className="text-white text-xl font-bold px-3 border-l-4 border-fuchsia-400">
-        Dashboard
-      </Text>
+    <View className="flex-1 bg-[#000] p-5">
+      <Text className="text-white text-2xl font-bold mb-3">Dashboard</Text>
 
-      <FlatList
-        data={chartData}
-        keyExtractor={(item) => item.id}
-        renderItem={renderChart}
-      />
+      <View style={{ height: 80 }}>
+        <FlatList
+          data={cardsData}
+          keyExtractor={item => item.id}
+          renderItem={renderCard}
+          horizontal
+          contentContainerStyle={{ paddingHorizontal: 5 }} // Ajuste del padding para mejor distribución
+          showsHorizontalScrollIndicator={false}           // Ocultar barra de desplazamiento
+        />
+      </View>
+
+      <View className="my-5">
+        <Text className="text-white text-lg font-bold">Statistics - Last Month</Text>
+        <LineChart
+          data={chartData}
+          width={screenWidth - 30}
+          height={220}
+          chartConfig={chartConfig}
+          bezier
+          style={{ borderRadius: 16, marginVertical: 8 }}
+        />
+      </View>
     </View>
   );
 }

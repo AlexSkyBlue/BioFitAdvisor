@@ -20,6 +20,7 @@ export default function Navigation() {
           component={Main}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

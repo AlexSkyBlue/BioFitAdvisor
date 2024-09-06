@@ -1,6 +1,6 @@
 // app/(tabs)/_layout.js
 import { Tabs } from "expo-router";
-import { DashboardIcon, CircleInfoIcon } from "../../components/(common)/Icons";
+import { DashboardIcon, UserIcon } from "../../components/(common)/Icons";
 
 export default function TabsLayout() {
   return (
@@ -14,16 +14,16 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: "Dashboard",
-          tabBarLabelStyle: { fontSize: 11.5 },
+          tabBarLabelStyle: { fontSize: 11 },
           tabBarIcon: ({ color }) => <DashboardIcon color={color} />,
         }}
       />
       <Tabs.Screen
-        name="about"
+        name="profile"
         options={{
-          title: "About",
-          tabBarLabelStyle: { fontSize: 11.5 },
-          tabBarIcon: ({ color }) => <CircleInfoIcon color={color} />,
+          title: "Perfil",
+          tabBarLabelStyle: { fontSize: 11 },
+          tabBarIcon: ({ color }) => <UserIcon color={color} />,
         }}
       />
     </Tabs>
