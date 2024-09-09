@@ -43,3 +43,7 @@ export const LogOutIcon = (props) => (
     {...props}
   />
 );
+
+export const PilatesIcon = (props) => (
+  <FontAwesome5 name="dumbbell" size={24} color="white" {...props} />
+);

@@ -21,9 +21,9 @@ export default function Dashboard() {
   };
 
   const chartConfig = {
-    backgroundColor: "#1d1f2e",
-    backgroundGradientFrom: "#1d1f2e",
-    backgroundGradientTo: "#1d1f2e",
+    backgroundColor: "#181d1f",
+    backgroundGradientFrom: "#181d1f",
+    backgroundGradientTo: "#181d1f",
     decimalPlaces: 2,
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -37,12 +37,12 @@ export default function Dashboard() {
       start={[0.2, 0]} // Empieza el gradiente desde la esquina superior izquierda
       end={[1, 2]} // Termina el gradiente en la parte inferior
       style={{
-        borderRadius: 20,              // Bordes redondeados más suaves
-        paddingHorizontal: 10,                   // Espaciado interior
-        marginRight: 15,               // Espaciado entre tarjetas
-        width: screenWidth * 0.35,     // Ancho ajustado al 35% del ancho de la pantalla
-        height: 80,                   // Altura fija para todas las tarjetas
-        justifyContent: 'center',      // Centrar contenido
+        borderRadius: 20,
+        paddingHorizontal: 10,
+        marginRight: 15,
+        width: screenWidth * 0.35,
+        height: 80,
+        justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.5,
@@ -66,8 +66,8 @@ export default function Dashboard() {
           keyExtractor={item => item.id}
           renderItem={renderCard}
           horizontal
-          contentContainerStyle={{ paddingHorizontal: 5 }} // Ajuste del padding para mejor distribución
-          showsHorizontalScrollIndicator={false}           // Ocultar barra de desplazamiento
+          contentContainerStyle={{ paddingHorizontal: 5 }}
+          showsHorizontalScrollIndicator={false}
         />
       </View>
 
@@ -79,7 +79,7 @@ export default function Dashboard() {
           height={220}
           chartConfig={chartConfig}
           bezier
-          style={{ borderRadius: 16, marginVertical: 8 }}
+          style={{ borderRadius: 16}}
         />
       </View>
     </View>

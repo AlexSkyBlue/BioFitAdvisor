@@ -11,7 +11,6 @@ export default function Profile() {
     { id: '4', title: 'Logros', icon: 'trophy', active: false },
     { id: '5', title: 'Mi Progreso', icon: 'chart-line', active: false },
     { id: '6', title: 'Configuraciones', icon: 'cog', active: false },
-    { id: '7', title: 'Cerrar Sesión', icon: 'sign-out-alt', active: false, screen: 'LoginScreen' }, // Indica la pantalla de destino
   ];
   
   const renderMenuItem = ({ item }) => (
