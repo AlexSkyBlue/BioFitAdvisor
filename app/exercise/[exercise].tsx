@@ -5,7 +5,13 @@ import { PilatesIcon } from '../../components/(common)/Icons';
 
 const ExerciseDetail = () => {
   const { exercise } = useLocalSearchParams();
-  const exerciseData = JSON.parse(exercise); // Convierte el string en un objeto JSON
+
+if (!exercise) {
+  return <Text>Datos no disponibles</Text>;
+}
+
+const exerciseData = typeof exercise === 'string' ? JSON.parse(exercise) : JSON.parse(exercise[0]);
+
 
   return (
     <View style={styles.container}>
@@ -26,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#181d1f', // Fondo oscuro
+    backgroundColor: '#000', // Fondo oscuro
   },
   iconContainer: {
     flexDirection: 'row',

@@ -47,3 +47,11 @@ export const LogOutIcon = (props) => (
 export const PilatesIcon = (props) => (
   <FontAwesome5 name="dumbbell" size={24} color="white" {...props} />
 );
+
+export const ArrowLeftIcon = (props) => (
+  <Feather name="arrow-left" size={24} color="white" {...props} />
+);
+
+export const ArrowRightIcon = (props) => (
+  <Feather name="arrow-right" size={24} color="white" {...props} />
+);

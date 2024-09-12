@@ -58,8 +58,6 @@ export default function Dashboard() {
 
   return (
     <View className="flex-1 bg-[#000] p-5">
-      <Text className="text-white text-2xl font-bold mb-3">Dashboard</Text>
-
       <View style={{ height: 80 }}>
         <FlatList
           data={cardsData}

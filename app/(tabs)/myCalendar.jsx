@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { TouchableOpacity, FlatList } from 'react-native';
 import { View, Text, StyleSheet } from 'react-native';
 import { ExpandableCalendar, CalendarProvider, LocaleConfig } from 'react-native-calendars';
-import { useRouter } from 'expo-router'; 
+import { Link } from 'expo-router'; 
 
 // Configuración de localización
 LocaleConfig.locales['es'] = {
@@ -37,8 +37,6 @@ const MyCalendar = () => {
     '2024-09-27': { marked: true, dotColor: '#E879F9' }
   });
   
-  const router = useRouter();
-
   useEffect(() => {
     setItems(exerciseData[selectedDate] || []);
     const newMarkedDates = {
@@ -57,12 +55,18 @@ const MyCalendar = () => {
       <View style={styles.item}>
         <Text style={styles.exerciseText}>{item.name}</Text>
         <Text style={styles.timeText}>{item.time} - {item.duration}</Text>
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={() => router.push({ pathname: '/exercise/[exercise]', params: { exercise: JSON.stringify(item) } })}
+        <Link
+          href={{
+            pathname: '/exercise/[exercise]',
+            params: { exercise: JSON.stringify(item) }
+          }}
+          asChild
         >
-          <Text style={styles.buttonText}>Info</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Info</Text>
+          </TouchableOpacity>
+        </Link>
+
       </View>
     ),
     []
@@ -73,7 +77,7 @@ const MyCalendar = () => {
       <ExpandableCalendar
         firstDay={1}
         theme={{
-          calendarBackground: '#181d1f',
+          calendarBackground: '#000',
           selectedDayBackgroundColor: '#610588',
           selectedDayTextColor: '#fff',
           todayTextColor: '#E879F9',

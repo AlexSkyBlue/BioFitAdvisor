@@ -16,7 +16,7 @@ export default function LoginScreen() {
       <Input iconName={"user"} placeholder={"Usuario"} />
       <Input iconName={"lock"} placeholder={"Contraseña"} />
 
-      <Link asChild href="/(tabs)/home">
+      <Link asChild href="/(tabs)/dashboard">
         <TouchableOpacity className="bg-fuchsia-600 p-4 rounded-full mt-4 w-full items-center">
           <Text className="text-white font-bold text-base">Iniciar Sesión</Text>
         </TouchableOpacity>

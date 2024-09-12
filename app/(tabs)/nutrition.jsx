@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import MenuItem from '../../components/(common)/MenuItem'; // Asegúrate de ajustar la ruta según tu estructura de carpetas
 
-export default function Profile() {
+export default function Nutrition() {
   
   const menuItems = [
     { id: '1', title: 'Home', icon: 'home', active: true },
