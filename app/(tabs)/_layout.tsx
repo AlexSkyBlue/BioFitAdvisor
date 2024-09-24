@@ -34,7 +34,6 @@ const Layout = () => {
     tabBarPressColor: '#610588', // Efecto de presionar en morado
   }}>
     <MaterialTopTabs.Screen name="dashboard" options={{ title: 'Dashboard' }} />
-    <MaterialTopTabs.Screen name="nutrition" options={{ title: 'Nutrición' }} />
     <MaterialTopTabs.Screen name="myCalendar" options={{ title: 'Mi Calendario' }} />
     <MaterialTopTabs.Screen name="configuration" options={{ title: 'Configuración' }} />
   </MaterialTopTabs>;
