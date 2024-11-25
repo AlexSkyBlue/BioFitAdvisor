@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "BioFitAdvisor",
+    "name": "MutaApp",
     "slug": "BioFitAdvisor",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "scheme": "biofitadvisor",
     "splash": {
       "image": "./assets/splash.png",
@@ -13,17 +13,30 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Esta aplicación necesita acceso a la cámara para capturar fotos."
+      }
     },
     "android": {
-      "package": "com.biofitadvisor.app",
+      "package": "com.MutaApp.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ad27280f-6b25-48e8-bfc6-a3ba893ed400"
+      }
+    },
+    "owner": "alexsky",
+    "plugins": []
   }
 }

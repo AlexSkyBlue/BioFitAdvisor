@@ -18,22 +18,23 @@ export const MaterialTopTabs = withLayoutContext<
 const Layout = () => {
   return <MaterialTopTabs  screenOptions={{
     tabBarStyle: {
-      backgroundColor: '#000', // Fondo oscuro
+      backgroundColor: '#fff', // Fondo oscuro
     },
     tabBarIndicatorStyle: {
-      backgroundColor: '#E879F9', // Indicador morado
+      backgroundColor: '#610588', // Indicador morado
       height: 4, // Ancho del indicador
     },
-    tabBarActiveTintColor: '#E879F9', // Color del texto activo
-    tabBarInactiveTintColor: '#fff', // Color del texto inactivo
+    tabBarActiveTintColor: '#610588', // Color del texto activo
+    tabBarInactiveTintColor: '#000', // Color del texto inactivo
     tabBarLabelStyle: {
       fontSize: 9,
       fontWeight: 'bold',
       textTransform: 'uppercase', // Texto en mayúsculas
     },
-    tabBarPressColor: '#610588', // Efecto de presionar en morado
+    tabBarPressColor: '#E91E63', // Efecto de presionar en morado
   }}>
     <MaterialTopTabs.Screen name="dashboard" options={{ title: 'Dashboard' }} />
+    <MaterialTopTabs.Screen name="muscleSelector" options={{ title: 'Ejercicios' }} />
     <MaterialTopTabs.Screen name="myCalendar" options={{ title: 'Mi Calendario' }} />
     <MaterialTopTabs.Screen name="configuration" options={{ title: 'Configuración' }} />
   </MaterialTopTabs>;

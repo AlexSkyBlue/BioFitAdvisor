@@ -12,15 +12,15 @@ export default function RootLayout() {
       {/* Este Stack asegura que todas las pantallas tengan un header */}
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: "#000" },
-          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#fff" },
+          headerTintColor: "#000",
           headerTitle: "",
           headerLeft: () => <Logo />,
           headerRight: () => (
             <View style={styles.headerRight}>
               <Link asChild href="/profile">
                 <Pressable>
-                  <UserIcon />
+                  <UserIcon color="black" />
                 </Pressable>
               </Link>
             </View>
@@ -37,7 +37,7 @@ export default function RootLayout() {
             headerTitleAlign: 'center',
             headerLeft: () => (
               <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <ArrowLeftIcon size={24} color="white" />
+                <ArrowLeftIcon size={24} color="black" />
                 <Text style={styles.backButtonText}>Volver</Text>
               </TouchableOpacity>
             ),
@@ -51,13 +51,21 @@ export default function RootLayout() {
             headerTitleAlign: 'center',
             headerLeft: () => (
               <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <ArrowLeftIcon size={24} color="white" />
+                <ArrowLeftIcon size={24} color="black" />
                 <Text style={styles.backButtonText}>Volver</Text>
               </TouchableOpacity>
             ),
-          })}
+            headerRight: () => (
+              <></>
+            ),
+            })}
         />
-
+        <Stack.Screen
+          name="exercise/generateExercisePlan"
+          options={{
+            headerShown: false, // This removes the header
+          }}
+        />
       </Stack>
     </View>
   );
@@ -69,6 +77,7 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
+    color: '#000',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
@@ -76,10 +85,11 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 10,
+    color: '#000',
+    paddingLeft: 0,
   },
   backButtonText: {
-    color: '#fff',
+    color: '#000',
     paddingLeft: 5,
     fontSize: 16,  // Tamaño de fuente ajustado
   },
