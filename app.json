@@ -2,7 +2,7 @@
   "expo": {
     "name": "MutaApp",
     "slug": "BioFitAdvisor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -20,6 +20,7 @@
     },
     "android": {
       "package": "com.MutaApp.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -37,6 +38,8 @@
       }
     },
     "owner": "alexsky",
-    "plugins": []
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
