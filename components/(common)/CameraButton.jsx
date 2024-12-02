@@ -4,9 +4,12 @@ import * as React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default Button = ({ icon, size, color, style, onPress }) => {
+export default Button = ({ icon, size, color, style, onPress, ...props }) => {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+    <TouchableOpacity
+      {...props}
+      style={[styles.button, style]}
+      onPress={onPress}>
       <MaterialIcons
         name={icon}
         size={size ? size : 20} //if size is passed in props we use it else we use 20

@@ -83,143 +83,23 @@ export default function GenerateExercisePlan() {
     }
 
     // Generar el texto de las limitaciones
-    const story = `Tengo limitaciones al hacer ejercicio por enfermedad/es como ${exerciseLimitations}. También tengo limitaciones en mi nutrición por alergias como ${nutritionLimitations}.`;
-
-    // Crear el objeto del plan sin el userId
-    const plan = {
-      planId: 0,
-      userId: 0,
-      name: "Entrenamiento para pérdida de peso",
-      language: "español",
-      description:
-        "Este plan de entrenamiento está diseñado para una persona de 1.85 m y 100 kg, con el objetivo de alcanzar un peso ideal mediante ejercicios de fuerza, resistencia y cardiovasculares.",
-      status: true,
-      numberOfWeeks: 12,
-      exercises: [
-        {
-          exerciseId: 1,
-          planId: 1,
-          dayNumber: 1,
-          exerciseIdentifier: "Saltos de tijera (Jumping Jacks)",
-          exerciseSubIdentifier: "Peso corporal",
-          duration: 2,
-          repetitions: 20,
-          sets: 3,
-          weightPercentage: "0%",
-        },
-        {
-          exerciseId: 2,
-          planId: 1,
-          dayNumber: 1,
-          exerciseIdentifier: "Sentadillas (Squats)",
-          exerciseSubIdentifier: "Barra o mancuernas",
-          duration: 0,
-          repetitions: 12,
-          sets: 4,
-          weightPercentage: "70%",
-        },
-        {
-          exerciseId: 3,
-          planId: 1,
-          dayNumber: 1,
-          exerciseIdentifier: "Prensa de pierna (Leg Press)",
-          exerciseSubIdentifier: "Máquina de prensa",
-          duration: 0,
-          repetitions: 15,
-          sets: 3,
-          weightPercentage: "80%",
-        },
-        {
-          exerciseId: 4,
-          planId: 1,
-          dayNumber: 3,
-          exerciseIdentifier: "Peso muerto (Deadlifts)",
-          exerciseSubIdentifier: "Barra",
-          duration: 0,
-          repetitions: 8,
-          sets: 4,
-          weightPercentage: "80%",
-        },
-        {
-          exerciseId: 5,
-          planId: 1,
-          dayNumber: 3,
-          exerciseIdentifier: "Zancadas (Lunges)",
-          exerciseSubIdentifier: "Mancuernas",
-          duration: 0,
-          repetitions: 12,
-          sets: 3,
-          weightPercentage: "70%",
-        },
-        {
-          exerciseId: 6,
-          planId: 1,
-          dayNumber: 5,
-          exerciseIdentifier: "Burpees",
-          exerciseSubIdentifier: "Peso corporal",
-          duration: 1,
-          repetitions: 12,
-          sets: 3,
-          weightPercentage: "0%",
-        },
-        {
-          exerciseId: 7,
-          planId: 1,
-          dayNumber: 5,
-          exerciseIdentifier: "Dominadas (Pull-ups)",
-          exerciseSubIdentifier: "Barra de dominadas",
-          duration: 0,
-          repetitions: 5,
-          sets: 4,
-          weightPercentage: "70%",
-        },
-        {
-          exerciseId: 8,
-          planId: 1,
-          dayNumber: 5,
-          exerciseIdentifier: "Elevación de talones (Calf Raises)",
-          exerciseSubIdentifier: "Mancuernas o peso corporal",
-          duration: 0,
-          repetitions: 20,
-          sets: 3,
-          weightPercentage: "50%",
-        },
-      ],
-      recommendation: {
-        recommendationId: 1,
-        planId: 1,
-        recommendation:
-          "Se recomienda combinar estos ejercicios con actividades cardiovasculares diarias como caminar, correr o bicicleta para aumentar el gasto calórico. Mantenerse hidratado y descansar entre 7-8 horas por noche.",
-      },
-      nutritionalAdvice: {
-        adviceId: 1,
-        planId: 1,
-        protein: "150-180g diarios",
-        carbohidratos:
-          "300-350g diarios (en su mayoría carbohidratos complejos)",
-        fat: "60-80g diarios (grasas saludables)",
-        hydration: "2.5-3 litros diarios",
-        supplements: "Multivitamínico, omega-3, proteína en polvo (opcional)",
-      },
-      precautions: {
-        precautionId: 1,
-        planId: 1,
-        precaution:
-          "Si experimentas dolor en las articulaciones o fatiga extrema, reduce la intensidad de los ejercicios. Consulta a un profesional si el dolor persiste.",
-      },
-    };
+    const description = `Tengo limitaciones al hacer ejercicio por enfermedad/es como ${exerciseLimitations}. También tengo limitaciones en mi nutrición por alergias como ${nutritionLimitations}.`;
 
     // Enviar el plan al endpoint
     axios
-      .post("https://fitai.cl/api/TrainingPlan/UpsertPlan", plan, {
-        headers: {
-          "Content-Type": "application/json",
-          accesstoken: UserData.token,
-        },
-      })
+      .post(
+        "https://fitai.cl/api/Ai/GeneratePlan",
+        { description: description },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accesstoken: UserData.token,
+          },
+        }
+      )
       .then(async (planResponse) => {
-        UserData.planId = planResponse.data;
-        console.log("Datos del Usuario actualizados:", UserData);
+        console.log("planResponse:", planResponse);
+        UserData.planId = planResponse.data.planId;
 
         await StorageService.saveData("UserData", UserData);
         setShowModal(true); // Mostrar el modal

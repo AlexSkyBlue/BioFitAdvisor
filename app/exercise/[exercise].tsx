@@ -11,9 +11,9 @@ const ExerciseDetail = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [isResting, setIsResting] = useState(false);
   const [iteration, setIteration] = useState(1);
-  const totalIterations = 2;
-  const durationPerIteration = 5;
-  const restDuration = 5;
+  var totalIterations = 2;
+  var durationPerIteration = 5;
+  var restDuration = 5;
 
   const [sound, setSound] = useState(null);
 

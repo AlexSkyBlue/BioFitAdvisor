@@ -20,7 +20,7 @@ export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: false, password: false });
-  const [status, setStatus] = useState(""); // Para manejar success o error
+  const [status, setStatus] = useState("");
   const router = useRouter();
 
   const handleLogin = () => {
@@ -43,8 +43,8 @@ export default function LoginScreen() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        identifier: username,
-        password: password,
+        identifier: username.trim(),
+        password: password.trim(),
       }),
     })
       .then((response) => {

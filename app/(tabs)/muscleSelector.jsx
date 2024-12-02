@@ -57,11 +57,12 @@ const MuscleSelector = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
+    <View style={styles.container} accessible={false}>
+      <View accessible={false}>
         {/* Selector de Músculos (scroll infinito hacia la derecha) */}
         <ScrollView
           className="py-2.5"
+          keyboardShouldPersistTaps="handled"
           ref={musclesScrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}>
@@ -87,6 +88,7 @@ const MuscleSelector = () => {
         {/* Selector de Equipamiento (scroll infinito hacia la izquierda) */}
         <ScrollView
           className="py-2.5"
+          keyboardShouldPersistTaps="handled"
           ref={equipmentScrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -111,7 +113,7 @@ const MuscleSelector = () => {
         </ScrollView>
 
         {/* Selector de Nivel (fijo) */}
-        <View style={styles.levelContainer}>
+        <View style={styles.levelContainer} accessible={false}>
           {level.map((lvl, index) => (
             <TouchableOpacity
               key={index}
@@ -136,8 +138,9 @@ const MuscleSelector = () => {
       <FlatList
         data={filteredExercises}
         keyExtractor={(item, index) => index.toString()}
+        keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (
-          <View style={styles.exerciseItem}>
+          <View style={styles.exerciseItem} accessible={false}>
             <Text style={styles.exerciseTitle}>{item.exercise}</Text>
             <Text style={styles.exerciseDetail}>
               Músculos: {item.muscles.join(", ")}

@@ -17,12 +17,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
-import {
-  Ionicons,
-  AntDesign,
-  FontAwesome,
-  FontAwesome6,
-} from "@expo/vector-icons";
+import { Ionicons, AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TakeImage from "../../components/(common)/TakeImage";
 import axios from "axios";
@@ -399,7 +394,7 @@ export default function RegisterScreen() {
                       }}
                       onPress={() => setSelectedSexo("Male")}>
                       <Ionicons
-                        name="man"
+                        name="man-sharp"
                         size={50}
                         color={
                           selectedSexo === "Male"
@@ -571,7 +566,6 @@ export default function RegisterScreen() {
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                         status={status.confirmPassword}
-                        secureTextEntry
                       />
                     </View>
                   </View>
@@ -587,21 +581,26 @@ export default function RegisterScreen() {
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => setShowTakeImage(true)}>
-                      <Text style={styles.buttonText}>Tomar Foto</Text>
                       {imageUri ? (
-                        <FontAwesome6
-                          name="camera-rotate"
-                          size={24}
-                          style={{ marginLeft: 10 }}
-                          color="white"
-                        />
+                        <>
+                          <Text style={styles.buttonText}>Retomar Foto</Text>
+                          <Ionicons
+                            name="camera-reverse-sharp"
+                            size={24}
+                            style={{ marginLeft: 10 }}
+                            color="white"
+                          />
+                        </>
                       ) : (
-                        <FontAwesome6
-                          name="camera"
-                          size={24}
-                          style={{ marginLeft: 10 }}
-                          color="white"
-                        />
+                        <>
+                          <Text style={styles.buttonText}>Tomar Foto</Text>
+                          <Ionicons
+                            name="camera-sharp"
+                            size={24}
+                            style={{ marginLeft: 10 }}
+                            color="white"
+                          />
+                        </>
                       )}
                     </TouchableOpacity>
                   )}
@@ -629,20 +628,30 @@ export default function RegisterScreen() {
                     </View>
                   )}
 
-                  {/* Mostrar el componente TakeImage cuando se presione el botón */}
-                  {showTakeImage && (
-                    <View style={{ width: "100vw", height: "100vh" }}>
+                  {/* Modal para abrir la cámara */}
+                  <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={showTakeImage}
+                    onRequestClose={() => setShowTakeImage(false)}>
+                    <View style={styles.modalContainer}>
+                      {/* Componente TakeImage dentro del modal */}
                       <TakeImage
-                        style={{
-                          width: "100vw",
-                          height: "100vh",
-                          objectFit: "contain",
+                        onPictureSaved={(uri) => {
+                          handlePictureSaved(uri);
+                          setShowTakeImage(false); // Cierra el modal al guardar la imagen
                         }}
-                        onPictureSaved={handlePictureSaved}
                         setPermissionsReady={setHasPermissions}
                       />
+
+                      {/* Botón para cerrar el modal */}
+                      <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={() => setShowTakeImage(false)}>
+                        <Text style={styles.closeButtonText}>Cerrar</Text>
+                      </TouchableOpacity>
                     </View>
-                  )}
+                  </Modal>
                 </View>
               )}
 
@@ -807,6 +816,12 @@ export default function RegisterScreen() {
   );
 }
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "black", // Fondo negro para que coincida con la cámara
+    justifyContent: "center",
+    alignItems: "center",
+  },
   stepContainer: {
     flex: 0.7,
     justifyContent: "flex-start",

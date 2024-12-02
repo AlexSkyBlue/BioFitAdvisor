@@ -7,6 +7,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  Dimensions, // Importar Dimensions
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -20,8 +21,8 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
     MediaLibrary.usePermissions();
   const [cameraProps, setCameraProps] = useState({
     zoom: 0,
-    facing: "front",
-    flash: "on",
+    facing: "back",
+    flash: "off",
     animateShutter: false,
     enableTorch: false,
   });
@@ -32,22 +33,18 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
 
   //to load the last saved image when permissions change
   useEffect(() => {
-    const checkPermissions = async () => {
-      if (!cameraPermission || !mediaLibraryPermissionResponse) {
-        setPermissionsReady(false);
-      } else if (
-        cameraPermission.granted &&
-        mediaLibraryPermissionResponse.status === "granted"
-      ) {
-        setPermissionsReady(true);
-        getLastSavedImage();
-      } else {
-        setPermissionsReady(false);
-      }
-    };
-
-    checkPermissions();
-  }, [cameraPermission, mediaLibraryPermissionResponse]);
+    if (!cameraPermission || !mediaLibraryPermissionResponse) {
+      setPermissionsReady(false); // Notifica al componente padre que no tiene permisos
+    } else if (
+      cameraPermission.granted &&
+      mediaLibraryPermissionResponse.status === "granted"
+    ) {
+      setPermissionsReady(true); // Notifica que los permisos están listos
+      getLastSavedImage(); // Cargar la última imagen guardada
+    } else {
+      setPermissionsReady(false);
+    }
+  }, [cameraPermission, mediaLibraryPermissionResponse, setPermissionsReady]);
 
   //function to toggle camera properties
   const toggleProperty = (prop, option1, option2) => {
@@ -143,53 +140,47 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
   ) {
     // Si los permisos no han sido otorgados.
     setPermissionsReady(false); // Notifica que los permisos aún no están listos
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>
-          Necesitamos permisos de cámara y galería para continuar.
-        </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            requestCameraPermission();
-            requestMediaLibraryPermission();
-          }}>
-          <Text style={styles.buttonText}>Otorgar Permisos</Text>
-          <MaterialCommunityIcons
-            name="cellphone-check"
-            style={{ marginLeft: 10 }}
-            size={24}
-            color="white"
-          />
-        </TouchableOpacity>
-      </View>
-    );
+    if (!cameraPermission || !mediaLibraryPermissionResponse) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.text}>
+            Necesitamos permisos de cámara y galería para continuar.
+          </Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              requestCameraPermission();
+              requestMediaLibraryPermission();
+            }}>
+            <Text style={styles.buttonText}>Otorgar Permisos</Text>
+            <MaterialCommunityIcons
+              name="cellphone-check"
+              style={{ marginLeft: 10 }}
+              size={24}
+              color="white"
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
 
   // Si los permisos han sido otorgados
   setPermissionsReady(true); // Actualiza el estado en el componente padre a "true"
 
   return (
-    <View
-      className="absolute -top-[50vh] -left-[45.1vw] w-[100vw] h-[100vh]"
-      style={styles.container}>
+    <View style={styles.container}>
       {!image ? (
-        <View className="w-full h-full">
+        <View className={"w-[100vw]"} style={{ flex: 1 }}>
           <View style={styles.topControlsContainer}>
             <CameraButton
-              icon={cameraProps.flash === "on" ? "flash-on" : "flash-off"}
-              onPress={() => toggleProperty("flash", "on", "off")}
-            />
-            <CameraButton
-              icon="animation"
-              color={cameraProps.animateShutter ? "white" : "#404040"}
-              onPress={() => toggleProperty("animateShutter", true, false)}
-            />
-            <CameraButton
+              style={{ width: 40 }}
               icon={
                 cameraProps.enableTorch ? "flashlight-on" : "flashlight-off"
               }
               onPress={() => toggleProperty("enableTorch", true, false)}
+              accessibilityLabel="Flash de Cámara"
+              accessibilityHint="Activar o Desactivar Flash de Cámara"
             />
           </View>
           <CameraView
@@ -202,7 +193,13 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
             ref={cameraRef}
           />
           <View style={styles.sliderContainer}>
-            <CameraButton icon="zoom-out" onPress={zoomOut} />
+            <CameraButton
+              style={{ width: 40 }}
+              icon="zoom-out"
+              onPress={zoomOut}
+              accessibilityLabel="Reducir zoom"
+              accessibilityHint="Disminuye el nivel de zoom"
+            />
             <Slider
               style={styles.slider}
               minimumValue={0}
@@ -212,8 +209,21 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
                 setCameraProps((current) => ({ ...current, zoom: value }))
               }
               step={0.1}
+              accessibilityLabel="Control deslizante de zoom"
+              accessibilityHint="Ajusta el nivel de zoom de la cámara"
+              accessibilityValue={{
+                min: "Sin zoom",
+                max: "Zoom máximo",
+                now: `${Math.round(cameraProps.zoom * 100)}%`,
+              }}
             />
-            <CameraButton icon="zoom-in" onPress={zoomIn} />
+            <CameraButton
+              style={{ width: 40 }}
+              icon="zoom-in"
+              onPress={zoomIn}
+              accessibilityLabel="Aumentar zoom"
+              accessibilityHint="Incrementa el nivel de zoom"
+            />
           </View>
           <View style={styles.bottomControlsContainer}>
             <TouchableOpacity
@@ -229,16 +239,20 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
               size={60}
               style={{ height: 60 }}
               onPress={takePicture}
+              accessibilityLabel="Tomar foto"
+              accessibilityHint="Captura una imagen usando la cámara"
             />
             <CameraButton
               icon="flip-camera-ios"
               onPress={() => toggleProperty("facing", "front", "back")}
               size={40}
+              accessibilityLabel="Cambiar cámara"
+              accessibilityHint="Alterna entre la cámara frontal y trasera"
             />
           </View>
         </View>
       ) : (
-        <View className="w-full h-full">
+        <View className={"w-[100vw]"} style={{ flex: 1 }}>
           <Image source={{ uri: image }} style={styles.camera} />
           <View style={styles.bottomControlsContainer}>
             <CameraButton
@@ -255,11 +269,9 @@ export default function TakeImage({ onPictureSaved, setPermissionsReady }) {
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 10,
+    flex: 100,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 50,
-    marginTop: 30,
   },
   topControlsContainer: {
     height: 70,
@@ -269,6 +281,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
+    color: "white",
     fontSize: 18,
     textAlign: "center",
   },
@@ -276,12 +289,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#E91E63",
     paddingVertical: 10,
-    paddingHorizontal: 5,
+    paddingHorizontal: 15,
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    width: "70%",
   },
   buttonText: {
     color: "white",
@@ -290,7 +302,7 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-    width: "100%",
+    width: "auto",
   },
   slider: {
     flex: 1,
