@@ -27,16 +27,15 @@ const Layout = () => {
     tabBarActiveTintColor: '#610588', // Color del texto activo
     tabBarInactiveTintColor: '#000', // Color del texto inactivo
     tabBarLabelStyle: {
-      fontSize: 9,
+      fontSize: 11,
       fontWeight: 'bold',
       textTransform: 'uppercase', // Texto en mayúsculas
     },
     tabBarPressColor: '#E91E63', // Efecto de presionar en morado
   }}>
-    <MaterialTopTabs.Screen name="dashboard" options={{ title: 'Dashboard' }} />
-    <MaterialTopTabs.Screen name="muscleSelector" options={{ title: 'Ejercicios' }} />
+    <MaterialTopTabs.Screen name="dashboard" options={{ title: 'Mi Dashboard' }} />
     <MaterialTopTabs.Screen name="myCalendar" options={{ title: 'Mi Calendario' }} />
-    <MaterialTopTabs.Screen name="configuration" options={{ title: 'Configuración' }} />
+    <MaterialTopTabs.Screen name="muscleSelector" options={{ title: 'Ejercicios' }} />
   </MaterialTopTabs>;
 };
 export default Layout;

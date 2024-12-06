@@ -8,6 +8,7 @@ const Input = ({
   iconClass = "mx-2",
   placeholder,
   secureTextEntry = false, // Indicador si el input es de tipo contraseña
+  secureTextEntryIconToggle = false,
   status = "default", // "warning", "success", "error"
   ...props
 }) => {
@@ -80,7 +81,7 @@ const Input = ({
         {...props}
       />
       {/* Mostrar icono de ojo si es una contraseña */}
-      {secureTextEntry && (
+      {secureTextEntry && secureTextEntryIconToggle && (
         <TouchableOpacity onPress={togglePasswordVisibility}>
           <Icon
             name={isPasswordVisible ? "eye" : "eye-slash"}

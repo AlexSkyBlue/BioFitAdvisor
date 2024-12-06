@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -16,23 +16,78 @@ import StorageService from "../../lib/StorageService";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import axios from "axios";
 import { useRouter } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Dashboard() {
   const [UserData, setUserData] = useState(null);
   const [exercisePlan, setExercisePlan] = useState(null); // Para almacenar el plan de ejercicios
   const [showModal, setShowModal] = useState(false); // Estado para mostrar el Modal
+  const [endPlan, setEndPlan] = useState(false); // Estado para mostrar el Modal
   const router = useRouter(); // Hook para redireccionar
   const screenWidth = Dimensions.get("window").width;
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUserData = async () => {
+        try {
+          const userData = await StorageService.getData("UserData");
+
+          if (userData.planExercisesDates) {
+            const fechaActual = new Date();
+            const endDate = new Date(userData.planExercisesDates.endDate);
+            if (endDate <= fechaActual) {
+              setEndPlan(true);
+              setShowModal(true);
+            }
+          } 
+        } catch (error) {
+          console.error("Error fetching UserData:", error);
+        }
+      };
+  
+      fetchUserData();
+
+      // No retorna nada, evitando errores
+      return () => {};
+    }, [])
+  );
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userData = await StorageService.getData("UserData");
+        var userData = await StorageService.getData("UserData");
+        console.log("userData",userData)
         setUserData(userData);
+
         if (userData) {
+          const userResponse = await fetch(`https://fitai.cl/api/User/GetUser?userId=${userData.userId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accesstoken: userData.token, // Token obtenido del login
+            }
+          });
+          
+          if (userResponse.ok) {
+            const userInformation = await userResponse.json();
+          
+            // Agregar el atributo userInformation usando spread operator
+            userData = { ...userData, userInformation };
+            console.log("Información del usuario obtenida:", userData);
+            
+            // Guardar el objeto actualizado en SecureStore
+            await StorageService.saveData("UserData", userData);
+          } else {
+            console.warn(
+              "No se pudo obtener la información del usuario",
+              userResponse.status
+            );
+          }
+
           if (userData.planId > 0) {
             await fetchExercisePlan(userData);
           } else {
+            // Aquí llega si el plan ha expirado
             setShowModal(true);
           }
         }
@@ -42,8 +97,6 @@ export default function Dashboard() {
     };
 
     const fetchExercisePlan = async (userData) => {
-      console.log("Making API call with token:", userData.token);
-
       await axios
         .get("https://fitai.cl/api/TrainingPlan/GetPlanById", {
           params: {
@@ -55,7 +108,6 @@ export default function Dashboard() {
           },
         })
         .then(async (response) => {
-          console.log("API response", response.data);
 
           if (response.status === 200) {
             const planData = response.data;
@@ -65,8 +117,6 @@ export default function Dashboard() {
             };
             setUserData(updatedUserData);
             setExercisePlan(planData);
-            console.log("updatedUserData", updatedUserData);
-
             await StorageService.saveData("UserData", updatedUserData);
           } else if (response.status === 401) {
             Alert.alert(
@@ -98,19 +148,17 @@ export default function Dashboard() {
   const cardsData = [
     {
       id: "1",
-      title: "10 Ejercicios",
-      subtitle: "1 hora 50 minutos",
-      value: "5/10",
+      title: "Ejercicio Realizado",
+      subtitle: "0 hora 0 minutos",
     },
-    { id: "2", title: "6 Comidas", subtitle: "1604.0 calorías", value: "4/6" },
-    { id: "3", title: "Dormiste", subtitle: "8 horas", value: "Zzz" },
+    { id: "2", title: "Calorías Quemadas", subtitle: "0.0 calorías" },
   ];
 
   const chartData = {
     labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"],
     datasets: [
       {
-        data: [20, 45, 28, 80, 99, 43],
+        data: [0, 0, 0, 0, 0, 0],
         strokeWidth: 5,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       },
@@ -136,8 +184,8 @@ export default function Dashboard() {
       style={{
         borderRadius: 20,
         paddingHorizontal: 10,
-        marginRight: 15,
-        width: screenWidth * 0.35,
+        marginHorizontal: 5,
+        width: screenWidth * 0.43,
         height: 80,
         justifyContent: "center",
       }}>
@@ -146,7 +194,7 @@ export default function Dashboard() {
       <Text className="text-white text-sm font-bold">{item.value}</Text>
     </LinearGradient>
   );
-  console.log("exercisePlan", exercisePlan);
+  
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#fff", padding: 15 }}>
       <View style={{ height: 80 }}>
@@ -215,7 +263,7 @@ export default function Dashboard() {
               Suplementos:
             </Text>
             <Text className="text-black text-sm mb-3">
-              {exercisePlan.nutritionalAdvice.supplements}
+              {exercisePlan.nutritionalAdvice.supplements ? exercisePlan.nutritionalAdvice.supplements : "No tengo consejos sobre suplementos para tí."}
             </Text>
           </View>
         </View>
@@ -230,7 +278,7 @@ export default function Dashboard() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
-              ¿Deseas generar el plan de ejercicios ahora?
+          	  {endPlan ? "Tu plan de ejercicios ha expirado. ¿Deseas generar un nuevo plan ahora?" : "¿Deseas generar el plan de ejercicios ahora?"}
             </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity

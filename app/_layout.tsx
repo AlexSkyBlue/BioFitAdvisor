@@ -1,14 +1,25 @@
 import React from 'react';
-import { Stack } from "expo-router";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { router, Stack } from "expo-router";
+import { Text, TouchableOpacity, View, StyleSheet, StatusBar } from "react-native";
 import { Logo } from "../components/(common)/Logo";
 import { ArrowLeftIcon, LogOutIcon, UserIcon } from "../components/(common)/Icons";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
+import { FontAwesome5 } from '@expo/vector-icons';
+import StorageService from '../lib/StorageService';
 
 export default function RootLayout() {
+  const logOut = async () => {
+    try {
+      await StorageService.deleteData("UserData");
+      router.push("/auth/loginScreen");
+    } catch (error) {
+      console.error("Error al intentar cerrar sesión: ",error)
+    }
+  };
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#fff" translucent={false} />
       {/* Este Stack asegura que todas las pantallas tengan un header */}
       <Stack
         screenOptions={{
@@ -41,7 +52,16 @@ export default function RootLayout() {
                 <Text style={styles.backButtonText}>Volver</Text>
               </TouchableOpacity>
             ),
-          })} />
+            headerRight: () => (
+              <>
+                <TouchableOpacity style={styles.backButton} onPress={() => (logOut())}>
+                  <FontAwesome5 name="sign-out-alt" size={20} color="black" />
+                  <Text style={styles.backButtonText}>Cerrar Sesión</Text>
+                </TouchableOpacity>
+              </>
+            ),
+          })}
+        />
         <Stack.Screen
           name="exercise/[exercise]"
           options={({ navigation }) => ({

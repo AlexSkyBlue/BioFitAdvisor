@@ -2,7 +2,7 @@
   "expo": {
     "name": "MutaApp",
     "slug": "BioFitAdvisor",
-    "version": "1.0.1",
+    "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "biofitadvisor",
@@ -19,7 +19,7 @@
     },
     "android": {
       "package": "com.MutaApp.app",
-      "versionCode": 1,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

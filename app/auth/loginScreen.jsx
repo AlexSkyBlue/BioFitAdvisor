@@ -17,8 +17,8 @@ import Input from "../../components/(common)/Input"; // Input actualizado con es
 import StorageService from "../../lib/StorageService"; // Adjust the path based on your structure
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("AlexParra");
+  const [password, setPassword] = useState("alexparra");
   const [errors, setErrors] = useState({ username: false, password: false });
   const [status, setStatus] = useState("");
   const router = useRouter();
@@ -72,17 +72,38 @@ export default function LoginScreen() {
         if (data && data.token) {
           // Si el login es exitoso, cambiar a estado success y redirigir al dashboard
           setStatus("success");
-
+          
           console.log(
             "objeto guarado en loginscreen saveData como UserData",
             data
           ); // Muestra el token u otros datos si es necesario
-
-          // Store the login response in SecureStore
-          await StorageService.saveData("UserData", data);
-
-          // Redirigir al dashboard
-          router.push("/(tabs)/dashboard");
+          
+          const userResponse = await fetch(`https://fitai.cl/api/User/GetUser?userId=${data.userId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accesstoken: data.token, // Token obtenido del login
+            }
+          });
+          
+          if (userResponse.ok) {
+            const userInformation = await userResponse.json();
+          
+            // Agregar el atributo userInformation usando spread operator
+            data = { ...data, userInformation };
+            console.log("Información del usuario obtenida:", data);
+            
+            // Guardar el objeto actualizado en SecureStore
+            await StorageService.saveData("UserData", data);
+          
+            // Redirigir al dashboard
+            router.push("/(tabs)/dashboard");
+          } else {
+            console.warn(
+              "No se pudo obtener la información del usuario",
+              userResponse.status
+            );
+          }
         }
       })
       .catch((error) => {
@@ -134,6 +155,7 @@ export default function LoginScreen() {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
+                secureTextEntryIconToggle={true}
                 status={errors.password ? "warning" : status} // Mostrar estado de warning si el campo está vacío
               />
 

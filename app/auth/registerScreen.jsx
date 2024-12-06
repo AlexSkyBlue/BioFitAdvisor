@@ -28,16 +28,16 @@ import InputCalendar from "../../components/(common)/InputCalendar";
 export default function RegisterScreen() {
   const [step, setStep] = useState(1);
 
-  const [usuario, setUsuario] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState(new Date());
+  const [usuario, setUsuario] = useState("AlexParra");
+  const [nombre, setNombre] = useState("Alex");
+  const [apellido, setApellido] = useState("Parra");
+  const [fechaNacimiento, setFechaNacimiento] = useState(new Date("2001-05-27"));
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedSexo, setSelectedSexo] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [selectedSexo, setSelectedSexo] = useState("Male");
+  const [email, setEmail] = useState("parraalex2001@gmail.com");
+  const [telefono, setTelefono] = useState("+56925680014");
+  const [password, setPassword] = useState("alexparra");
+  const [confirmPassword, setConfirmPassword] = useState("alexparra");
 
   const [hasPermissions, setHasPermissions] = useState(true);
   const [imageUri, setImageUri] = useState(null);
@@ -154,7 +154,7 @@ export default function RegisterScreen() {
       firstName: nombre,
       lastName: apellido,
       sex: selectedSexo,
-      birthdayDate: fechaNacimiento.toISOString(),
+      birthdate: fechaNacimiento.toISOString(),
       email: email,
       password: password,
       phone: telefono,
@@ -166,7 +166,7 @@ export default function RegisterScreen() {
       modificationDate: new Date().toISOString(),
       status: true,
     };
-
+    console.log("user",user)
     await axios
       .post("https://fitai.cl/api/User/UpsertUser", user, {
         headers: {
@@ -546,6 +546,7 @@ export default function RegisterScreen() {
                         onChangeText={setPassword}
                         status={status.password}
                         secureTextEntry
+                        secureTextEntryIconToggle
                       />
                     </View>
 
@@ -566,6 +567,7 @@ export default function RegisterScreen() {
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                         status={status.confirmPassword}
+                        secureTextEntry
                       />
                     </View>
                   </View>
@@ -577,10 +579,10 @@ export default function RegisterScreen() {
                 <View style={styles.stepContainer}>
                   <Text style={styles.title}>Tómate una foto</Text>
                   {/* Botón para tomar foto */}
-                  {hasPermissions && (
+                  {true && (
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={() => setShowTakeImage(true)}>
+                      onPress={() => {setImageUri(null);setWeight(0.0);setHeight(0.0);setShowTakeImage(true);}}>
                       {imageUri ? (
                         <>
                           <Text style={styles.buttonText}>Retomar Foto</Text>

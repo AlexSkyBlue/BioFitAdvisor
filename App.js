@@ -6,7 +6,6 @@ import Navigation from "./components/Navigation";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
       <View style={styles.container}>
         <Navigation />
       </View>

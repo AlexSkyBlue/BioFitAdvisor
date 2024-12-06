@@ -11,12 +11,14 @@ const ExerciseDetail = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [isResting, setIsResting] = useState(false);
   const [iteration, setIteration] = useState(1);
-  var totalIterations = 2;
-  var durationPerIteration = 5;
-  var restDuration = 5;
+  var totalIterations = 0;
+  var durationPerIteration = 0;
+  var restDuration = 0;
+  var dateExercise = "";
+  var dateExerciseDescription = "";
 
   const [sound, setSound] = useState(null);
-
+  console.log("exercise", exercise)
   if (!exercise) {
     return <Text>Datos no disponibles</Text>;
   }
@@ -34,6 +36,18 @@ const ExerciseDetail = () => {
         Los datos del ejercicio no están disponibles o son incorrectos.
       </Text>
     );
+  } else {
+    totalIterations = exerciseData.details.totalIterations;
+    durationPerIteration = exerciseData.details.durationPerIteration;
+    restDuration = exerciseData.details.restDuration;
+    dateExercise = exerciseData.date.split("T")[0];
+    // Formatear la fecha en el formato deseado
+    const [year, month, day] = dateExercise.split("-");
+    const months = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    dateExerciseDescription = `${parseInt(day)} de ${months[parseInt(month) - 1]} de ${year}`;
   }
 
   async function playSound(soundFile: any) {
@@ -102,57 +116,69 @@ const ExerciseDetail = () => {
     setTime(0);
     setIteration(1);
   };
-
+  console.log("exerciseData",exerciseData)
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}> 
       <View style={styles.container}>
         <View style={styles.iconContainer}>
           <PilatesIcon style={styles.icon} />
-          <Text style={styles.title}>{exerciseData.exercise}</Text>
+          <Text style={styles.title}>{exerciseData.details.exercise}</Text>
         </View>
         <View style={styles.detailsContainer}>
           <Text style={styles.detail}>
-            Músculos trabajados: {exerciseData.muscles.join(", ")}
-          </Text>
-          <Text style={styles.detail}>Equipo: {exerciseData.equipment}</Text>
-          <Text style={styles.detail}>Nivel: {exerciseData.level}</Text>
-          <Text style={styles.detail}>
-            Repeticiones: {exerciseData.repetitions}
-          </Text>
-          <Text style={styles.detail}>Series: {exerciseData.sets}</Text>
-          <Text style={styles.detail}>
-            Descripción: {exerciseData.description}
+            Músculos trabajados:{" "}
+            {exerciseData.details.muscles ? exerciseData.details.muscles.join(", ") : "No especificado"}
           </Text>
           <Text style={styles.detail}>
-            Errores comunes: {exerciseData.common_mistakes.join(", ")}
+            Equipo: {exerciseData.details.equipment || "No especificado"}
           </Text>
           <Text style={styles.detail}>
-            Beneficios: {exerciseData.health_benefits}
+            Fecha de ejecución: {dateExerciseDescription || "No especificado"}
           </Text>
           <Text style={styles.detail}>
-            Tiempo de descanso: {exerciseData.rest_time}
+            Nivel: {exerciseData.details.level || "No especificado"}
+          </Text>
+          <Text style={styles.detail}>
+            Iteraciones: {exerciseData.details.totalIterationsDescription || "No especificado"}
+          </Text>
+          <Text style={styles.detail}>
+            Duración de iteración: {exerciseData.details.durationPerIterationDescription || "No especificado"}
+          </Text>
+          <Text style={styles.detail}>
+            Descripción: {exerciseData.details.description || "No especificado"}
+          </Text>
+          <Text style={styles.detail}>
+            Errores comunes:{" "}
+            {exerciseData.details.common_mistakes
+              ? exerciseData.details.common_mistakes.join(", ")
+              : "No especificado"}
+          </Text>
+          <Text style={styles.detail}>
+            Beneficios: {exerciseData.details.health_benefits || "No especificado"}
+          </Text>
+          <Text style={styles.detail}>
+            Tiempo de descanso: {exerciseData.details.restDurationDescription || "No especificado"}
           </Text>
         </View>
 
         <View style={styles.timerContainer}>
-          {!isRunning ? (
+        {dateExercise === new Date().toISOString().split("T")[0] ? (
+          !isRunning ? (
             <TouchableOpacity style={styles.startButton} onPress={handleStart}>
               <Text style={styles.buttonText}>Iniciar Ejercicio</Text>
             </TouchableOpacity>
           ) : (
             <View style={styles.controls}>
               <Text style={styles.timer}>
-                {Math.floor(time / 60)
-                  .toString()
-                  .padStart(2, "0")}
-                :{(time % 60).toString().padStart(2, "0")}
+                {Math.floor(time / 60).toString().padStart(2, "0")}:
+                {(time % 60).toString().padStart(2, "0")}
               </Text>
               <Text style={styles.detail}>
                 {isResting
                   ? `Descanso de ${restDuration} segundos`
                   : `Iteración ${iteration} de ${totalIterations}`}
               </Text>
-              <View style={{flexDirection: "row"}}>
+              <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity style={styles.pauseButton} onPress={handlePause}>
                   <Text style={styles.buttonText}>
                     {isPaused ? "Reanudar" : "Pausar"}
@@ -163,7 +189,14 @@ const ExerciseDetail = () => {
                 </TouchableOpacity>
               </View>
             </View>
-          )}
+          )
+        ) : (
+          <View style={styles.noItems}>
+            <Text style={{ color: "#610588", fontWeight: "600" }}>
+              No puedes realizar este ejercicio debido a que tiene su fecha de ejecución para el día {dateExerciseDescription}.
+            </Text>
+          </View>
+        )}
         </View>
       </View>
     </ScrollView>
@@ -216,6 +249,12 @@ const styles = StyleSheet.create({
   },
   controls: {
     alignItems: "center",
+  },
+  noItems: {
+    paddingVertical: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
   },
   startButton: {
     backgroundColor: "#610588",
