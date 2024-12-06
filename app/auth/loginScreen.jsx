@@ -17,8 +17,8 @@ import Input from "../../components/(common)/Input"; // Input actualizado con es
 import StorageService from "../../lib/StorageService"; // Adjust the path based on your structure
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState("AlexParra");
-  const [password, setPassword] = useState("alexparra");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: false, password: false });
   const [status, setStatus] = useState("");
   const router = useRouter();

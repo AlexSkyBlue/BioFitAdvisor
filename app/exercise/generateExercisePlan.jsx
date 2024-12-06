@@ -20,8 +20,8 @@ import StorageService from "../../lib/StorageService";
 import { useRouter } from "expo-router";
 
 export default function GenerateExercisePlan() {
-  const [exerciseLimitations, setExerciseLimitations] = useState("Dolor lumbar");
-  const [nutritionLimitations, setNutritionLimitations] = useState("Alergía a las algas");
+  const [exerciseLimitations, setExerciseLimitations] = useState("");
+  const [nutritionLimitations, setNutritionLimitations] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [UserData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

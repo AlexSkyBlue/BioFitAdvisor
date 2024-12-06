@@ -28,16 +28,16 @@ import InputCalendar from "../../components/(common)/InputCalendar";
 export default function RegisterScreen() {
   const [step, setStep] = useState(1);
 
-  const [usuario, setUsuario] = useState("AlexParra");
-  const [nombre, setNombre] = useState("Alex");
-  const [apellido, setApellido] = useState("Parra");
-  const [fechaNacimiento, setFechaNacimiento] = useState(new Date("2001-05-27"));
+  const [usuario, setUsuario] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedSexo, setSelectedSexo] = useState("Male");
-  const [email, setEmail] = useState("parraalex2001@gmail.com");
-  const [telefono, setTelefono] = useState("+56925680014");
-  const [password, setPassword] = useState("alexparra");
-  const [confirmPassword, setConfirmPassword] = useState("alexparra");
+  const [selectedSexo, setSelectedSexo] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [hasPermissions, setHasPermissions] = useState(true);
   const [imageUri, setImageUri] = useState(null);
